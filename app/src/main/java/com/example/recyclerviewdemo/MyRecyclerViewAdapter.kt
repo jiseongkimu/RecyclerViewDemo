@@ -3,10 +3,8 @@ package com.example.recyclerviewdemo
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ExpandableListView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recyclerviewdemo.databinding.ListItemBinding
 
 // 메인으로부터 전달받을 매개변수를 생성자에 설정
 class MyRecyclerViewAdapter(
@@ -17,12 +15,17 @@ class MyRecyclerViewAdapter(
 
     // 리스트 아이템(뷰홀더, 레이아웃)을 생성하는 곳, 템플릿(xml)이 필요함
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        /*
         // 1. 레이아웃 인플레이터를 참조 하여 인스턴스 생성
         val layoutInflater = LayoutInflater.from(parent.context)
         // 2. 위의 인스턴스를 사용하여 리스트 아이템 인플레이트
         val listItem = layoutInflater.inflate(R.layout.list_item, parent, false)
         // 뷰홀더 인스턴스를 리턴해야함. 정의는 MyViewHolder에서
         return MyViewHolder(listItem)
+        */
+        val listItemBinding = ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(listItemBinding)
+
     }
     // recyclerview가 viewholder를 가져와 데이터 연결할때 호출
     // 적절한 데이터를 가져와서 그 데이터를 사용하여 뷰홀더의 레이아웃에 채움(데이터 표시)
@@ -41,13 +44,20 @@ class MyRecyclerViewAdapter(
 }
 // RecyclerView.ViewHolder()는 뷰를 매개변수로 갖는다.
 // 뷰 컴포넌트를 가져와야 한다
-class MyViewHolder(val view: View): RecyclerView.ViewHolder(view){
+class MyViewHolder(
+    private val binding : ListItemBinding
+    ):RecyclerView.ViewHolder(binding.root){
     fun bind(fruit: Fruit, clickListener:(Fruit)->Unit){
-        val myTextView = view.findViewById<TextView>(R.id.tvName)
-        myTextView.text = fruit.name
+//        val myTextView = view.findViewById<TextView>(R.id.tvName)
+//        myTextView.text = fruit.name
+        binding.tvName.text = fruit.name
 
-        view.setOnClickListener{
-          clickListener(fruit)
+//        view.setOnClickListener{
+//          clickListener(fruit)
+//        }
+
+        binding.root.setOnClickListener{
+            clickListener(fruit)
         }
     }
 
